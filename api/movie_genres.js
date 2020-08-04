@@ -41,11 +41,12 @@ router.get('/genres/:id', async(req, res) => {
     })
 })
 
-router.get('/movielike', async(req, res) => {
+router.get('/movielike/:genreId', async(req, res) => {
     let db = req.db
     let rows = await db('mm_movies as m')
         .join('mm_movies_genres as m_g', 'm.movie_id', 'm_g.movie_id')
         .join('mm_genres as g', 'g.genres_id', 'm_g.genres_id')
+        .where('g.genres_id','=',req.params.genreId)
     res.send({
         ok: true,
         movie_like: rows,

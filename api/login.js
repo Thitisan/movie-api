@@ -44,6 +44,7 @@ router.post('/sign-up', userMiddleware.validateRegister, async(req, res, next) =
                 })
             } else {
                 let insertDB = await db('user_login').insert({
+                    id: uuid.v4(),
                     username: req.body.username,
                     password: hash,
                     registered: date_format_str
