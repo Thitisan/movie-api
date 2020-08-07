@@ -119,3 +119,10 @@ router.get('/user', userMiddleware.isLoggedIn, (req, res, next) => {
         }
     });
 });
+router.post('/logout', userMiddleware.isLoggedIn, (req, res, next) => {
+    res.send({
+        user: {
+            data: 'a'
+        }
+    });
+});

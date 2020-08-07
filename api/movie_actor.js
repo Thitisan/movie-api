@@ -40,6 +40,11 @@ router.get('/actorId/:id', async(req, res) => {
     })
 })
 
+router.delete('/aid/:actorId', function(req, res) {
+    req.db('mm_movies').where({ actorId: req.params.actorId }).delete().then(() => {
+        res.send({ status: true })
+    }).catch(e => res.send({ status: false, error: e.message }))
+})
 
 router.delete('/id/:actorId', function(req, res) {
     req.db('mm_movies_actor').where({ actorId: req.params.actorId }).delete().then(() => {
@@ -62,7 +67,6 @@ router.post('/actorRole', async(req, res) => {
 router.post('/newActor', async(req, res) => {
     let db = req.db
     let ids = await db('mm_actor').insert({
-        actorId: req.body.actorId,
         actorName: req.body.actorName,
         actorBplace: req.body.actorBplace,
         actorBdate: req.body.actorBdate
@@ -70,6 +74,19 @@ router.post('/newActor', async(req, res) => {
     res.send({
         ok: true,
         ids: ids
+    })
+})
+
+router.post('/editActor', async(req, res) => {
+    let db = req.db
+    let ids = await db('mm_actor as m').where('m.actorId', '=', req.body.actorId).update({
+        actorId: req.body.actorId,
+        actorName: req.body.actorName,
+        actorBplace: req.body.actorBplace,
+        actorBdate: req.body.actorBdate
+    })
+    res.send({
+        ok: true
     })
 })
 
